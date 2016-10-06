@@ -29,7 +29,7 @@ public class ScoreBoard : MonoBehaviour
 
 	void Update() {
 		if (targetPoints != 0 && points == targetPoints) {
-			DisplaySplash ("You just won this game! Awesome :D", Color.green);
+			DisplayGameoverSplash ("You just won this game! Awesome :D", Color.green);
 		}
 	}
 
@@ -42,16 +42,39 @@ public class ScoreBoard : MonoBehaviour
 	public void RestartGame() {
 		points = 0;
 		HideCanvas (splashCanvas);
-		foreach (var spawn in GameObject.FindObjectsOfType<Spawnable> ()) {
-			Destroy (spawn);
+		
+		setSpawnersTo(true);
+		if(!playerIsAlive) 
+			Instantiate (SmileyPrefab);
+	}
+	private bool playerIsAlive = true;
+	private void destroyAllSpawns()
+	{
+		playerIsAlive = false;
+		foreach (var spawn in GameObject.FindObjectsOfType<Spawnable>())
+		{
+			if (!spawn.CompareTag("Player"))
+				Destroy(spawn.gameObject);
+			else
+				playerIsAlive = true;
 		}
-		Instantiate (SmileyPrefab);
 	}
 
-	public void DisplaySplash(string splash, Color displayColor) {
+	private void setSpawnersTo(bool state)
+	{
+		foreach (var spawner in GameObject.FindObjectsOfType<Spawner>())
+		{
+			spawner.KeepSpawning = state;
+		}
+	}
+
+	public void DisplayGameoverSplash(string splash, Color displayColor) {
 		SplashText.text = splash;
 		SplashText.color = displayColor;
 		ShowCanvas (splashCanvas);
+
+		setSpawnersTo(false);
+		destroyAllSpawns();
 	}
 
 	void ShowCanvas(CanvasGroup cg) {

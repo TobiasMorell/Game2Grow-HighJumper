@@ -27,9 +27,20 @@ public class FlyTowards : MonoBehaviour {
 			Quaternion rotation = Quaternion.LookRotation (target.position - transform.position, transform.TransformDirection(Vector3.up));
 			transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
 
+			//Nogle gange bevæger objektet sig 180grader modsat:
+			float dist = Vector2.Distance(transform.position, target.position);
+
 			//Og bevæger sig frem mod det
-			if(Mathf.Abs(Vector2.Distance(transform.position, target.position)) > minDistanceToTarget)
+			if (Mathf.Abs(Vector2.Distance(transform.position, target.position)) > minDistanceToTarget)
+			{
 				transform.position += -transform.right * speed * Time.deltaTime;
+				if (Vector2.Distance(transform.position, target.position) > dist)
+					transform.Rotate(0, 0, 180);
+			}
+		}
+		else
+		{
+			Destroy(this.gameObject);
 		}
 	}
 }

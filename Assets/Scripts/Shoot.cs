@@ -4,7 +4,7 @@ using System.Collections;
 public class Shoot : MonoBehaviour {
 	public GameObject ThingToShoot;
 	public float HowOftenToShoot;
-	public Transform Target;
+	public Transform target;
 
 	private float timer;
 
@@ -12,17 +12,22 @@ public class Shoot : MonoBehaviour {
 	void Start () {
 		Physics2D.IgnoreCollision (this.GetComponent<Collider2D> (), ThingToShoot.GetComponent<Collider2D> ());
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		timer += Time.deltaTime;
 
-		if (timer > HowOftenToShoot) {
-			var shot = Instantiate (ThingToShoot);
+		if (timer > HowOftenToShoot)
+		{
+			//Reset timer
+			timer = 0;
 
-			//Kigger over mod målet
-			Quaternion rotation = Quaternion.LookRotation (Target.position - transform.position, transform.TransformDirection (Vector3.up));
-			shot.transform.rotation = new Quaternion (0, 0, rotation.z, rotation.w);
+			Vector3 myPos = new Vector3(transform.position.x, transform.position.y) + transform.forward;
+			Vector2 direction = target.position - myPos;
+			direction.Normalize();
+			GameObject projectile = (GameObject)Instantiate(ThingToShoot, myPos, Quaternion.identity);
+			projectile.GetComponent<Rigidbody2D>().velocity = direction * 7;
 		}
 	}
 }

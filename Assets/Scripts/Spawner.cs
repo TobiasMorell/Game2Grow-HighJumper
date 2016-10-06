@@ -31,6 +31,8 @@ public class Spawner : MonoBehaviour {
 	//Du kan ikke se denne fordi den er 'private'.
 	private float timer = 0f;
 
+	public bool KeepSpawning = false;
+
 	void Start() {
 		if (!SpawnByTime)
 			spawn ();
@@ -41,13 +43,13 @@ public class Spawner : MonoBehaviour {
 		timer += Time.deltaTime;
 
 		//Hvis timeren har overskredet din angivne tid vil koden mellem de to tuborgklammer ({}) blive kørt.
-		if (SpawnByTime && timer > timeBetweenSpawn) {
+		if (KeepSpawning && SpawnByTime && timer > timeBetweenSpawn) {
 			spawn ();
 		}
 	}
 
 	public void SpawnNew() {
-		if(!SpawnByTime)
+		if(!SpawnByTime && KeepSpawning)
 			spawn ();
 	}
 

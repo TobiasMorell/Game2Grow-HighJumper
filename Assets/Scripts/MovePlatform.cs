@@ -21,7 +21,6 @@ public class MovePlatform : MonoBehaviour {
 	}
 
 	public void HitWall() {
-		xSpeed = -xSpeed;
-		ySpeed = -ySpeed;
+		moving = false;
 	}
 }

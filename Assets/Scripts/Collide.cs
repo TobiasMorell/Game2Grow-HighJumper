@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Collide : MonoBehaviour {
 	public bool ignorePlatforms;
+	public string killMessage;
 
 	//Denne metode bliver kaldt hver gang tingen som denne sidder på støder ind i noget.
 	void OnTriggerEnter2D(Collider2D other) {
@@ -23,10 +24,10 @@ public class Collide : MonoBehaviour {
 				Destroy (other.gameObject);
 
 				//Display a splash on-screen
-				ScoreBoard.Instance.DisplaySplash("You died horribly! :'(", Color.red);
+				ScoreBoard.Instance.DisplayGameoverSplash(killMessage, Color.red);
 			}
-
-			//Ødelægger missilet.
+			
+			//Ødelægger objektet
 			Destroy (this.gameObject);
 		}
 
